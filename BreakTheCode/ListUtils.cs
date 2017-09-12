@@ -31,8 +31,7 @@ namespace BreakTheCode
         {
             if (values == null) throw new ArgumentNullException(nameof(values));
 
-            var valuesToDispose = values.OfType<IDisposable>();
-            foreach (var disposable in valuesToDispose)
+            foreach (var disposable in values.OfType<IDisposable>())
             {
                 disposable.Dispose();
             }

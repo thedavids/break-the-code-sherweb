@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace BreakTheCode.Tests
@@ -33,22 +32,12 @@ namespace BreakTheCode.Tests
         [TestMethod]
         public void TestReverseInPlaceOdd()
         {
-            var list = new List<int>() { 1, 2, 3, 4, 5, 6, 7};
+            var list = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
             var expected = new List<int>() { 7, 6, 5, 4, 3, 2, 1 };
 
             ListUtils.ReverseInPlace(list);
 
             Assert.AreEqual(true, list.SequenceEqual(expected));
-        }
-
-        [TestMethod]
-        public void TestReverseEmptyAndDisposeNoDisposable()
-        {
-            var list = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
-
-            ListUtils.EmptyAndDispose(list);
-
-            Assert.AreEqual(0, list.Count);
         }
 
         [TestMethod]
@@ -68,9 +57,10 @@ namespace BreakTheCode.Tests
             var list = new List<BreakTheCodeDisposable>() { ms, new BreakTheCodeDisposable(), null };
 
             Assert.AreEqual(false, ms.DisposedValue);
-            ListUtils.EmptyAndDispose(list);
-            Assert.AreEqual(true, ms.DisposedValue);
 
+            ListUtils.EmptyAndDispose(list);
+
+            Assert.AreEqual(true, ms.DisposedValue);
             Assert.AreEqual(0, list.Count);
         }
 
@@ -92,8 +82,12 @@ namespace BreakTheCode.Tests
             var list = new List<BreakTheCodeDisposable>() { ms, new BreakTheCodeDisposable(), null };
 
             Assert.AreEqual(false, ms.DisposedValue);
+            Assert.AreEqual(false, list[1].DisposedValue);
+
             ListUtils.DisposeAll(list);
+
             Assert.AreEqual(true, ms.DisposedValue);
+            Assert.AreEqual(true, list[1].DisposedValue);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BreakTheCode
+namespace BreakTheCode.Tests
 {
     public class BreakTheCodeDisposable : IDisposable
     {

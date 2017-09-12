@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,13 @@ namespace BreakTheCode.Tests
     [TestClass]
     public class BreakTheCodeTest
     {
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ReverseInPlaceArgumentNullException()
+        {
+            ListUtils.ReverseInPlace(null);
+        }
+
         [TestMethod]
         public void TestReverseInPlaceEmpty()
         {
@@ -41,6 +49,13 @@ namespace BreakTheCode.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmptyAndDisposeArgumentNullException()
+        {
+            ListUtils.EmptyAndDispose(null);
+        }
+
+        [TestMethod]
         public void TestEmptyAndDisposeNoDisposable()
         {
             var list = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
@@ -53,15 +68,22 @@ namespace BreakTheCode.Tests
         [TestMethod]
         public void TestEmptyAndDisposeWithDisposables()
         {
-            var ms = new BreakTheCodeDisposable();
-            var list = new List<BreakTheCodeDisposable>() { ms, new BreakTheCodeDisposable(), null };
+            var btcd = new BreakTheCodeDisposable();
+            var list = new List<BreakTheCodeDisposable>() { btcd, new BreakTheCodeDisposable(), null };
 
-            Assert.AreEqual(false, ms.DisposedValue);
+            Assert.AreEqual(false, btcd.DisposedValue);
 
             ListUtils.EmptyAndDispose(list);
 
-            Assert.AreEqual(true, ms.DisposedValue);
+            Assert.AreEqual(true, btcd.DisposedValue);
             Assert.AreEqual(0, list.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DisposeAllArgumentNullException()
+        {
+            ListUtils.DisposeAll(null);
         }
 
         [TestMethod]
@@ -78,15 +100,15 @@ namespace BreakTheCode.Tests
         [TestMethod]
         public void TestDisposeAllWithDisposables()
         {
-            var ms = new BreakTheCodeDisposable();
-            var list = new List<BreakTheCodeDisposable>() { ms, new BreakTheCodeDisposable(), null };
+            var btcd = new BreakTheCodeDisposable();
+            var list = new List<BreakTheCodeDisposable>() { btcd, new BreakTheCodeDisposable(), null };
 
-            Assert.AreEqual(false, ms.DisposedValue);
+            Assert.AreEqual(false, btcd.DisposedValue);
             Assert.AreEqual(false, list[1].DisposedValue);
 
             ListUtils.DisposeAll(list);
 
-            Assert.AreEqual(true, ms.DisposedValue);
+            Assert.AreEqual(true, btcd.DisposedValue);
             Assert.AreEqual(true, list[1].DisposedValue);
         }
     }
